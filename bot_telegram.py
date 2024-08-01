@@ -15,7 +15,7 @@ from telebot import types
 from dotenv import load_dotenv
 
 
-path_assets = '/home/ghost/rpibots/BitcoinResearch/Telegram-Bot/'
+path_assets = '/home/ghost/telegrambot/'
 
 
 
@@ -75,7 +75,7 @@ else:
 
 #CARGANDO TOKENS
 #donde se guardan los tokens como variables de entorno
-path = '/home/ghost/rpibots/'
+path = '/home/ghost/'
 load_dotenv(path+'.env')
 # autenrtificación y cuenta maestra
 token = os.getenv('token')
@@ -237,7 +237,7 @@ def menu_menu(m):
         if cid == master:
             mess = 'Se envia en txt la salida del comando ifconfig'
             bot.send_message(cid,mess)
-            os.popen('ifconfig > ip.txt')
+            os.popen('ip a > ip.txt')
             bot.send_chat_action(cid, 'upload_document')
             time.sleep(2)
             with open('ip.txt','rb') as ips:
