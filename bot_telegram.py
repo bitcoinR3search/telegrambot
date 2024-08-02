@@ -2,7 +2,9 @@
 ##******************Telegram Nodo Btc********************************##
 #######################################################################
 
-
+# Este proyecto busca mostrar como montar un bot en telegram
+# para el despliegue de informacion de precios de bitcoin en bs
+# y compartir graficas
 # La primera versión solo tiene tres acciones:
 # /start - Inicia el bot, realiza un saludo y guarda usuario en log.
 # send_ip - manda el ip con que el rpi se conecta.        solo admins
@@ -14,7 +16,7 @@ import numpy as np
 from telebot import types
 from dotenv import load_dotenv
 
-
+# directorio para binarios registros y logs
 path_assets = '/home/ghost/telegrambot/'
 
 
@@ -27,7 +29,6 @@ path_assets = '/home/ghost/telegrambot/'
 # se registró. 
 # En caso de reinicio o corte abrupto, con estos 3 files se puede recuperar el log de el
 # último registro de error y seguir corriendo donde estaba para cada usuario en separado.
-
 # todos estan en una carpeta bins que no se sube al repositorio
 
 # Crea un archivo log si no existe.
@@ -39,22 +40,29 @@ if not os.path.exists(path_assets+'bins/bot_telegram.log'):
 #Configurando log del funcionamiento interno del bot. 
 logging.basicConfig(filename=path_assets+'bins/bot_telegram.log',filemode='a+',format='%(asctime)s,%(message)s,%(levelname)s', datefmt='%d-%b-%y,%H:%M:%S',level=logging.INFO)
 logging.info('Iniciando Bot telegram')
-# Cargamos los usuarios conocídos. De no existir creamos una lista vacía.
-# KnownUsers es un array de usuarios conocidos
 
+
+# Cargamos los usuarios conocídos. De no existir creamos una lista vacía.
+# KnownUsers es un array numpy de usuarios conocidos
 if(os.path.exists(path_assets+'bins/knownUsers.npy')):
     logging.info('Cargando archivo con Usuarios Conocidos')
     aux         = np.load(path_assets+'bins/knownUsers.npy', allow_pickle='TRUE') 
     knownUsers  = aux.tolist()
 else:
-    logging.info('Creando archivo para nuevos usuarios conocidos')
+    logging.info('Creando archivo para nuevos usuarios')
     knownUsers = []
     np.save(path_assets+'bins/knownUsers.npy',knownUsers)
 
+
+# La variable anterior mantiene en memoria los usuarios que han aplicado al bot
+# es una lista donde se guardan los number user de telegram
+# Otra variable es userStep que guarda en que lugar del bot se encuentra cada usuario
+# es un diccionario que transformamos de json
+
+
+
 # Cargamos el archivo json como un diccionario en python. Para transformarlo
 # usamos una funcion extra
-
-
 def jsonKeys2int(x):
     if isinstance(x, dict):
             return {int(k):v for k,v in x.items()}
@@ -271,4 +279,3 @@ if __name__ == '__main__':
 
         #lo ideal seria implementar un sistema de logs
         # para otros errores 
-
